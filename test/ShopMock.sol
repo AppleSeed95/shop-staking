@@ -61,7 +61,22 @@ contract SHOP is ERC20("Shop Bot", "SHOP"), Ownable {
         }
     }
 
-    
+    constructor() {
+        marketingWallet = msg.sender;
+        devWallet = msg.sender;
+        _mint(msg.sender, 100_000_000 * 10 ** 18);
+
+        IUniswapV2Router02 _router = IUniswapV2Router02(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
+
+        router = _router;
+        exemptFee[address(this)] = true;
+        exemptFee[msg.sender] = true;
+        exemptFee[marketingWallet] = true;
+        exemptFee[devWallet] = true;
+        exemptFee[0x0000000000000000000000000000000000000000] = true;
+
+        _approve(address(this), address(router), type(uint256).max);
+    }
 
     function mint(address to, uint256 amount) external {
         _mint(to, amount);
