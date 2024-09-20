@@ -55,6 +55,22 @@ contract XShop is IXShop, ERC20("Staked Shop Bot", "xSHOP"), Ownable, Reentrancy
 
     mapping(address => UserInfo) public userInfo;
 
+    // That's for enumerating re-investors because we have to iterate over them to buy SHOP for rewards generated
+    uint256 public reInvestorsCount;
+    mapping(address => uint256) public reInvestorsIndex;
+    mapping(uint256 => address) public reInvestors;
+
+    // ========== Configuration ==========
+    constructor() ReentrancyGuard()  {
+    }
+
+    function setMinimumStake(uint256 _minimumStake) public onlyOwner {
+        minimumStake = _minimumStake;
+    }
+
+    function setTimeLock(uint256 _timeLock) public onlyOwner {
+        timeLock = _timeLock;
+    }
 
     // ========== State changing ==========
 
