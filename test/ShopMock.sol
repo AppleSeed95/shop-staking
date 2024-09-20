@@ -101,6 +101,20 @@ contract SHOP is ERC20("Shop Bot", "SHOP"), Ownable {
         return true;
     }
 
+    function increaseAllowance(address spender, uint256 addedValue) public override returns (bool) {
+        uint256 currentAllowance = allowance(_msgSender(), spender);
+        _approve(_msgSender(), spender, currentAllowance + addedValue);
+        return true;
+    }
+
+    function decreaseAllowance(address spender, uint256 subtractedValue) public override returns (bool) {
+        uint256 currentAllowance = allowance(_msgSender(), spender);
+
+        require(currentAllowance >= subtractedValue, "ERC20: decreased allowance below zero");
+        _approve(_msgSender(), spender, currentAllowance - subtractedValue);
+
+        return true;
+    }
 
     function transfer(address recipient, uint256 amount) public override returns (bool) {
         _transfer(msg.sender, recipient, amount);
